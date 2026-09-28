@@ -1,0 +1,89 @@
+<% if (categoria) { %>
+    <h1>Produtos — <%= categoria.nome %></h1>
+    <a href="/produtos">Ver todos</a>
+<% } else { %>
+    <h1>Produtos</h1>
+<% } %>
+
+<a href="/produtos/novo">Novo produto</a>
+|
+<a href="/categorias/novo">Nova categoria</a>
+
+<br><br>
+
+<form method="GET" action="/produtos">
+    <input type="text" name="q" placeholder="Pesquisar por nome" value="<%= q %>">
+    <button type="submit">Pesquisar</button>
+    <% if (q) { %>
+        <a href="/produtos">Limpar</a>
+    <% } %>
+</form>
+
+<br>
+
+<label>Filtrar por categoria:</label>
+<select onchange="if (this.value) { location.href = this.value; }">
+    <option value="/produtos">Todas</option>
+    <% categorias.forEach(c => { %>
+        <option
+            value="/produtos/categoria/<%= c.id %>"
+            <% if (categoria && categoria.id === c.id) { %>selected<% } %>
+        >
+            <%= c.nome %>
+        </option>
+    <% }) %>
+</select>
+
+<br><br>
+
+<p>Total: <%= count %> produto(s)</p>
+
+<table border="1">
+    <tr>
+        <th>Nome</th>
+        <th>Preço</th>
+        <th>Quantidade</th>
+        <th>Categoria</th>
+        <th>Ações</th>
+    </tr>
+
+    <% produtos.forEach(p => { %>
+
+        <tr>
+            <td><%= p.nome %></td>
+            <td><%= p.preco %></td>
+            <td><%= p.quantidade %></td>
+            <td><%= p.Categoria ? p.Categoria.nome : '-' %></td>
+
+            <td>
+                <a href="/produtos/<%= p.id %>/editar">
+                    Editar
+                </a>
+
+                <form
+                    action="/produtos/<%= p.id %>?_method=DELETE"
+                    method="POST"
+                    style="display:inline"
+                >
+                    <button type="submit">
+                        Excluir
+                    </button>
+                </form>
+            </td>
+        </tr>
+
+    <% }) %>
+
+</table>
+
+<br>
+
+<p>Página <%= page %> de <%= totalPages %></p>
+
+<% if (page > 1) { %>
+    <a href="?page=<%= page - 1 %><% if (q) { %>&q=<%= q %><% } %>">Anterior</a>
+<% } %>
+
+<% if (page < totalPages) { %>
+    <a href="?page=<%= page + 1 %><% if (q) { %>&q=<%= q %><% } %>">Próxima</a>
+<% } %>
