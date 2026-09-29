@@ -31,7 +31,8 @@ O banco `database.sqlite` é criado automaticamente na primeira execução
 
 ## Funcionalidades
 
-- Cadastro de produtos (nome, preço, quantidade e categoria obrigatória)
+- Cadastro de produtos (nome, preço, quantidade e categoria obrigatória —
+  sem categoria cadastrada o formulário bloqueia e orienta criar em `/categorias/novo`)
 - Listagem de produtos com categoria, paginação (5 por página) e total
 - Edição de produtos
 - Exclusão de produtos
@@ -78,9 +79,14 @@ Produto.belongsTo(Categoria, { foreignKey: 'categoriaId' });
 
 Isso cria a chave estrangeira `categoriaId` na tabela `Produtos`. Criado o CRUD
 de categorias (`routes/categorias.js` + `views/categorias/`) e os formulários de
-produto passaram a exigir a categoria (`<select name="categoriaId">`), enquanto
-a listagem usa `findAll({ include: Categoria })` para exibir o nome da categoria
-de cada produto. Tudo persiste no SQLite.
+produto passaram a exigir a categoria (`<select name="categoriaId" required>`),
+enquanto a listagem usa `findAndCountAll({ include: Categoria })` para exibir o
+nome da categoria de cada produto. Tudo persiste no SQLite.
+
+> Se nenhuma categoria existir, `GET /produtos/novo` e `GET /produtos/:id/editar`
+> exibem o aviso "Nenhuma categoria cadastrada" com link para `/categorias/novo`
+> e botão desabilitado; `POST /produtos` e `POST /produtos/:id` sem `categoriaId`
+> válido retornam 400.
 
 ### Desafio 2 — Consulta de produtos por categoria
 
