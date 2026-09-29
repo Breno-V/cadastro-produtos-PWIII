@@ -56,6 +56,21 @@ router.get('/novo', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
+    if (!req.body.categoriaId) {
+      return res.status(400).render('error', {
+        message: 'Categoria é obrigatória. Cadastre uma categoria em /categorias/novo antes de criar produtos.',
+        error: {}
+      });
+    }
+
+    const categoria = await Categoria.findByPk(req.body.categoriaId);
+    if (!categoria) {
+      return res.status(400).render('error', {
+        message: 'Categoria informada não existe.',
+        error: {}
+      });
+    }
+
     await Produto.create({
       nome: req.body.nome,
       preco: req.body.preco,
@@ -125,6 +140,21 @@ router.get('/:id/editar', async (req, res, next) => {
 
 router.post('/:id', async (req, res, next) => {
   try {
+    if (!req.body.categoriaId) {
+      return res.status(400).render('error', {
+        message: 'Categoria é obrigatória.',
+        error: {}
+      });
+    }
+
+    const categoria = await Categoria.findByPk(req.body.categoriaId);
+    if (!categoria) {
+      return res.status(400).render('error', {
+        message: 'Categoria informada não existe.',
+        error: {}
+      });
+    }
+
     await Produto.update({
       nome: req.body.nome,
       preco: req.body.preco,

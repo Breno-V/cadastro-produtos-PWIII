@@ -18,17 +18,28 @@
     <br>
 
     <label>Categoria:</label>
-    <select name="categoriaId" required>
-        <% categorias.forEach(c => { %>
-            <option value="<%= c.id %>"><%= c.nome %></option>
-        <% }) %>
-    </select>
-    <a href="/categorias/novo">+ Nova categoria</a>
+    <% if (categorias.length === 0) { %>
+        <p><strong>Nenhuma categoria cadastrada.</strong> Cadastre uma categoria antes de criar produtos.</p>
+        <a href="/categorias/novo">+ Nova categoria</a>
 
-    <br>
+        <br><br>
 
-    <button type="submit">
-        Salvar
-    </button>
+        <button type="submit" disabled>
+            Salvar
+        </button>
+    <% } else { %>
+        <select name="categoriaId" required>
+            <% categorias.forEach(c => { %>
+                <option value="<%= c.id %>"><%= c.nome %></option>
+            <% }) %>
+        </select>
+        <a href="/categorias/novo">+ Nova categoria</a>
+
+        <br>
+
+        <button type="submit">
+            Salvar
+        </button>
+    <% } %>
 
 </form>
