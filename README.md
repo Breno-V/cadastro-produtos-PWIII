@@ -3,6 +3,8 @@
 Aplicação web em Node.js + Express (padrão MVC) para cadastro de produtos organizados por
 categorias, com persistência em SQLite via Sequelize e páginas renderizadas em EJS.
 
+(**Todos os desafios propostos, segundo o PDF de guia de estudo, foram realizados com êxito**)
+
 ## Integrante
 
 Breno Valentim — RM: 20240207
